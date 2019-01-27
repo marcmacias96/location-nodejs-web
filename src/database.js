@@ -6,4 +6,4 @@ mongose.connect('mongodb+srv://johanz97:Pa$$w0rd@maps-ccghm.gcp.mongodb.net/test
     useNewUrlParser: true
 })
 .then(db => console.log('DB is connected'))
-  .catch(err => console.error(err));
+  .catch(err => console.error('Base de datos no conectada',err));

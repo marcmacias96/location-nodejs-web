@@ -1,44 +1,61 @@
-const body_parser = require("body-parser");
+
 const express = require("express");
+const exphbs = require('express-handlebars');
 const morgan = require("morgan");
-const mongo = require("mongoose");
-const userRoutes = require('./routes/users');
 const socketIO = require('socket.io');
 const http = require('http');
-const engine = require('ejs-mate');
 const path = require('path');
+const methodOverride = require('method-override')
+const session = require('express-session')
+const flash = require('connect-flash')
+const bodyParser = require('body-parser');
+
 //Iniializations
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+require('./database');
+//Sockets
+require('./sockets')(io);
 
 //settings
 //Configuramos la base de datos a usar
-mongo.Promise=global.Promise;
-/*mongo.connect(
-    "mongodb://localhost/rest-api",
-    {
-      useNewUrlParser: true
-    }
-  )
-  .then(db => console.log("db is conected"))
-  .catch(err => console.log(err));*/
-app.engine('ejs',engine);
-app.set('view engine','ejs');
-app.set('views',path.join(__dirname,'views'));
-//establecemos el puerto a usar
+
 app.set("port", process.env.PORT || 3000);
+app.set('views',path.join(__dirname,'views'));
+app.engine('.hbs',exphbs({
+  defaultLayout: 'main',
+  layoutsDir: path.join(app.get('views'), 'layouts'),
+  partialsDir: path.join(app.get('views'), 'partials'),
+  extname: '.hbs'
+}));
+app.set('view engine', '.hbs');
+
 
 //middlware
+app.use(bodyParser.json());
+app.use(express.urlencoded({extended: false}));
 app.use(morgan("dev"));
-app.use(body_parser.json());
-//Sockets
-require('./sockets')(io);
-//Routes
-app.use('/superv',userRoutes);
-app.get('/mapa',(req,res)=>{
-  res.render('index');
+app.use(methodOverride('_method'))
+app.use(session({
+  secret: 'mysecretapp',
+  resave: true,
+  saveUninitialized: true
+}))
+app.use(flash())
+
+//Variables globales
+app.use(( req, res, next ) => {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  next()
 })
+
+//Routes
+app.use(require('./routes/index'))
+app.use(require('./routes/mapa'))
+app.use(require('./routes/users'))
+
 //static files
 app.use(express.static(path.join(__dirname,'public')));
 

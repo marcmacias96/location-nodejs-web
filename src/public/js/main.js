@@ -8,7 +8,10 @@ const tile = L.tileLayer(tileURL2).addTo(map);
 // Socket Io
 const socket = io.connect();
 
- 
+map.on('click', addMarker);
+function addMarker(e){
+  socket.emit('addMarker',e.latlng)
+}
 // Geolocation
 map.locate({enableHighAccuracy: true})
 
@@ -22,11 +25,13 @@ map.on('locationfound', (e) => {
   }).addTo(map); 
   map.setView(coords,8);
   socket.emit('init',coords)
+    
   const newMarker = L.marker(coords);
   newMarker.bindPopup('You are Here!');
   map.addLayer(newMarker);
   socket.emit('userCoordinates', e.latlng);
 });
+
 
 // socket new User connected
 socket.on('newUserCoordinates', (coords) => {
@@ -70,6 +75,21 @@ if(confirmacion){
 	alert("Has pulsado cancelar");
 }
 });
+
+socket.on('addMarkers',(location) => {
+  const userIcon = L.icon({
+    iconUrl: '/img/loc.png',
+    iconSize: [38, 42],
+  })
+  const newMarker = L.marker(location,{
+    icon: userIcon
+  });
+  newMarker.bindPopup('New Point!');
+  map.addLayer(newMarker  )
+  
+  
+})
+
 
 
 

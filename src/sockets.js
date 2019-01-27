@@ -9,11 +9,12 @@ module.exports = io => {
         socket.emit('UserDesco')
      });
 
-     socket.on('deleteUser',(corUser) => {
-       corUSer.forEach(element => {
-          
-       });
+     socket.on('addMarker', (newMarker) => {
+      socket.broadcast.emit('addMarkers',newMarker)
+      socket.emit('addMarkers',newMarker)
      })
+
+    
       socket.on('init',(cords) => {
         socket.emit('InitUnsers',conections)
         conections.push(cords);

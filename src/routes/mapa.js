@@ -4,7 +4,7 @@ const Ubication = require('../models/ubication')
 const {isAuthenticated} = require('../helpers/auth')
 
 router.get('/mapa',isAuthenticated ,isAuthenticated, async (req,res) => {
-    const ubications = await Ubication.find().sort({date: 'desc'})
+    const ubications = await Ubication.find({user:res.locals.user.id}).sort({date: 'desc'})
 
     res.render('map/mapa',{ubications})
 })
@@ -35,7 +35,7 @@ router.delete('/mapa/delete-ubication/:id',isAuthenticated, async (req,res) => {
 })
 
 router.post('/mapa/new-ubication',isAuthenticated, async (req,res) => {
-    const { name, description, location } = req.body
+    const { name, description, location,user } = req.body
     const errors = []
     if(!name){
         errors.push({text: 'Porfavor ingrese el nombre'})
@@ -50,7 +50,12 @@ router.post('/mapa/new-ubication',isAuthenticated, async (req,res) => {
             description
         })
     }else{
-        const newUbication = new Ubication({name,description,location})
+        const user = res.locals.user.id.toString()
+
+        
+        const newUbication = new Ubication({name,description,location,user})
+        console.log('hola2',newUbication.user);
+        
         await newUbication.save()  
         req.flash('success_msg','Ubicacion Agregada satisfactoriamente')
         res.redirect('/mapa')

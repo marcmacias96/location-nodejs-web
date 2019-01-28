@@ -17,6 +17,7 @@ module.exports = io => {
     
       socket.on('init',(cords) => {
         socket.emit('InitUnsers',conections)
+    
         conections.push(cords);
       })
       

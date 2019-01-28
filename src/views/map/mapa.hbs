@@ -1,7 +1,7 @@
 
       <div class="row">
           <div class="col-md-6">
-              <h3>Ubicaciones Guardadas</h3>
+              <h3 id="nameTitle"> Hola {{user.name}}</h3>
               <div class="row">
                   {{#each ubications}}
                     <div class="col-md-5">
@@ -26,7 +26,7 @@
                     {{else}}
                     <div class="card mx-auto">
                         <div class="card-body">
-                            <p class="lead" id="tit"></p>
+                            <p class="lead" id="tit">Ubicaciones</p>
                             <a href="/mapa/new-ubication" class="btn btn-success btn-block">Crea Una</a>
                         </div>
                     </div>

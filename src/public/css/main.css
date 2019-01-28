@@ -25,3 +25,12 @@ body {
   #card-location {
     margin-top: 10px;
   }
+
+  .logo {
+    width: 50%;
+  }
+
+  #nameTitle {
+    color: aliceblue;
+    text-align: center; 
+  }

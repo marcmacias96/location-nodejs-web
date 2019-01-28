@@ -9,12 +9,15 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const flash = require('connect-flash')
 const bodyParser = require('body-parser');
+const passport = require('passport')
 
 //Iniializations
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 require('./database');
+require('./config/passport')
+
 //Sockets
 require('./sockets')(io);
 
@@ -42,12 +45,16 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(flash())
 
 //Variables globales
 app.use(( req, res, next ) => {
   res.locals.success_msg = req.flash('success_msg')
   res.locals.error_msg = req.flash('error_msg')
+  res.locals.error = req.flash('error')
+  res.locals.user = req.user || null
   next()
 })
 

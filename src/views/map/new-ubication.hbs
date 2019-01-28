@@ -1,11 +1,3 @@
-{{#each errors}}
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{text}}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-{{/each}}
 
 <div class="col-md-4 mx-auto">
     <div class="card">
@@ -15,13 +7,13 @@
     <div class="card-body">
         <form action="/mapa/new-ubication" method="POST">
             <div class="form-group">
-                <input onclick="getLocation()" type="text" name="name" class="form-control" placeholder="Ingresa el nombre de la Ubicacion" autofocus>
+                <input onclick="getLocation()" type="text" name="name" class="form-control" placeholder="Ingresa el nombre de la Ubicacion" >
             </div>
             <div class="form-group">
                 <textarea  name="description" class="form-control" placeholder="Ingresa una descripcion de la Ubicacion" ></textarea>
             </div>
             <div class="form-group">
-                <input type="text"  id="loc" value="55" name="location" class="form-control">
+                <input type="text"  id="loc" value="" name="location" class="form-control">
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-success btn-block" >Guardar</button>

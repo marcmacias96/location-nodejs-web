@@ -17,12 +17,6 @@ map.locate({enableHighAccuracy: true})
 
 map.on('locationfound', (e) => {
   const coords = [e.latlng.lat, e.latlng.lng];
-  L.Routing.control({
-    waypoints: [
-        L.latLng(-0.9319,-78.6161),
-        L.latLng(coords[0],coords[1]) 
-    ]
-  }).addTo(map); 
   map.setView(coords,8);
   socket.emit('init',coords)
     

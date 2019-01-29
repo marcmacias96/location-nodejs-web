@@ -7,6 +7,9 @@ const tileURL2 = 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
 const tile = L.tileLayer(tileURL2).addTo(map);
 // Socket Io
 const socket = io.connect();
+name = document.getElementById('nameTitle').textContent
+console.log(name);
+
 
 map.on('click', addMarker);
 function addMarker(e){
@@ -18,7 +21,10 @@ map.locate({enableHighAccuracy: true})
 map.on('locationfound', (e) => {
   const coords = [e.latlng.lat, e.latlng.lng];
   map.setView(coords,8);
-  socket.emit('init',coords)
+  conect = [coords,name]
+  console.log(conect);
+  
+  socket.emit('init',conect)
     
   const newMarker = L.marker(coords);
   newMarker.bindPopup('You are Here!');
@@ -45,7 +51,7 @@ socket.on('newUserCoordinates', (coords) => {
 socket.on('InitUnsers',(conections) => {
   console.log(conections);
   
-  conections.forEach(coords => {
+  conections[0].forEach(coords => {
     const userIcon = L.icon({
       iconUrl: '/img/icon.png',
       iconSize: [38, 42],

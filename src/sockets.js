@@ -16,15 +16,23 @@ module.exports = io => {
 
     
       socket.on('init',(cords) => {
-        socket.emit('InitUnsers',conections)
-    
-        conections.push(cords);
+        if(conections.length != 0){
+          socket.broadcast.emit('InitUnsers',conections)
+          if(cords[1] in conections[1]) {
+
+          }  else{
+            
+            conections.push(cords);
+
+          }
+        } 
+        
+        
       })
       
       console.log('new socket connected');
       socket.on('userCoordinates', (coords) => {
         socket.broadcast.emit('newUserCoordinates', coords);
-        
       });
       
     });

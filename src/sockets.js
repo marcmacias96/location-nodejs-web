@@ -15,24 +15,30 @@ module.exports = io => {
      })
 
     
-      socket.on('init',(cords) => {
-        if(conections.length != 0){
-          socket.broadcast.emit('InitUnsers',conections)
-          if(cords[1] in conections[1]) {
-
-          }  else{
-            
-            conections.push(cords);
-
-          }
-        } 
-        
-        
-      })
+    
+     socket.on('init',(name) => {
+     
       
+      Object.keys(conections).forEach(con => {
+        if(con!=name) {
+     
+          socket.emit('initUsers',conections[con].coords)
+        }
+      });
+     }) 
+
       console.log('new socket connected');
-      socket.on('userCoordinates', (coords) => {
-        socket.broadcast.emit('newUserCoordinates', coords);
+      socket.on('userCoordinates', (coords,name) => {
+        if(name in conections){
+        
+        } else {
+          socket.nickname = name
+          socket.coords = coords
+          conections[socket.nickname] = socket
+          socket.broadcast.emit('newUserCoordinates', socket.coords);
+        }
+          
+       
       });
       
     });

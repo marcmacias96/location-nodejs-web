@@ -19,28 +19,24 @@ function addMarker(e){
 map.locate({enableHighAccuracy: true})
 
 map.on('locationfound', (e) => {
+  socket.emit('init',name)
   const coords = [e.latlng.lat, e.latlng.lng];
-  map.setView(coords,8);
-  conect = [coords,name]
-  console.log(conect);
-  
-  socket.emit('init',conect)
-    
+  map.setView(coords,5);    
   const newMarker = L.marker(coords);
   newMarker.bindPopup('You are Here!');
   map.addLayer(newMarker);
-  socket.emit('userCoordinates', e.latlng);
+  
+  socket.emit('userCoordinates', coords,name);
 });
 
 
 // socket new User connected
 socket.on('newUserCoordinates', (coords) => {
-  
   const userIcon = L.icon({
     iconUrl: '/img/icon.png',
     iconSize: [38, 42],
   })
-  const newUserMarker = L.marker([coords.lat + cont, coords.lng +cont], {
+  const newUserMarker = L.marker([coords[0] + cont, coords[1] +cont], {
     icon: userIcon  
   });
   cont +=0.5;
@@ -48,23 +44,19 @@ socket.on('newUserCoordinates', (coords) => {
   map.addLayer(newUserMarker);
 }); 
 
-socket.on('InitUnsers',(conections) => {
-  console.log(conections);
-  
-  conections[0].forEach(coords => {
-    const userIcon = L.icon({
-      iconUrl: '/img/icon.png',
-      iconSize: [38, 42],
-    })
-    const newUserMarker = L.marker([coords[0] + cont, coords[1] +cont], {
-      icon: userIcon  
-    });
-    cont ++
-    newUserMarker.bindPopup('New User!');
-    map.addLayer(newUserMarker);
+socket.on('initUsers',(coords) => {
+  const userIcon = L.icon({
+    iconUrl: '/img/icon.png',
+    iconSize: [38, 42],
+  })
+  const newUserMarker = L.marker([coords[0] + cont, coords[1] +cont], {
+    icon: userIcon  
   });
-  
+  cont +=0.5;
+  newUserMarker.bindPopup('New User!');
+  map.addLayer(newUserMarker);
 })
+  
 
 socket.on('UserDesco', () => {
   console.log('Got disconnect!');

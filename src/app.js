@@ -38,7 +38,7 @@ app.set('view engine', '.hbs');
 //middlware
 app.use(bodyParser.json());
 app.use(express.urlencoded({extended: false}));
-app.use(morgan("dev"));
+//app.use(morgan("dev"));
 app.use(methodOverride('_method'))
 app.use(session({
   secret: 'mysecretapp',

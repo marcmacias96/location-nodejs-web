@@ -10,6 +10,8 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const bodyParser = require('body-parser');
 const passport = require('passport')
+require('dotenv').config()
+
 
 //Iniializations
 const app = express();
@@ -62,6 +64,8 @@ app.use(( req, res, next ) => {
 app.use(require('./routes/index'))
 app.use(require('./routes/mapa'))
 app.use(require('./routes/users'))
+
+
 
 //static files
 app.use(express.static(path.join(__dirname,'public')));

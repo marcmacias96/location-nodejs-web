@@ -12,3 +12,4 @@ const UbicationSchemea = new Schema({
 
 const ubication  = mongo.model('ubications',UbicationSchemea);
 module.exports = ubication;
+

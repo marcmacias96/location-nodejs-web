@@ -1,7 +1,10 @@
 const mongose = require('mongoose')
-
+//cluster
+//mongodb+srv://johanz97:Pa$$w0rd@maps-ccghm.gcp.mongodb.net/test?retryWrites=true
+//local
+//mongodb://localhost/maps
 mongose.set('useFindAndModify',false);
-mongose.connect('mongodb+srv://mmacias96:Guitarra2896@maps-a9jhm.azure.mongodb.net/test?retryWrites=true',{
+mongose.connect('mongodb+srv://johanz97:Pa$$w0rd@maps-ccghm.gcp.mongodb.net/test?retryWrites=true',{
     useCreateIndex: true,
     useNewUrlParser: true
 })

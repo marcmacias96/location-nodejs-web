@@ -5,8 +5,9 @@ module.exports = io => {
     io.on('connection', socket => {
       
       socket.on('disconnect', () => {
-        console.log('Got disconnect!');
-        socket.emit('UserDesco')
+        console.log(socket.nickname);
+        
+        io.emit('UserDesco',socket.nickname)
      });
 
      socket.on('addMarker', (newMarker) => {
@@ -22,7 +23,7 @@ module.exports = io => {
       Object.keys(conections).forEach(con => {
         if(con!=name) {
      
-          socket.emit('initUsers',conections[con].coords)
+          socket.emit('initUsers',conections[con].coords,conections[con].nickname)
         }
       });
      }) 
@@ -35,7 +36,7 @@ module.exports = io => {
           socket.nickname = name
           socket.coords = coords
           conections[socket.nickname] = socket
-          socket.broadcast.emit('newUserCoordinates', socket.coords);
+          socket.broadcast.emit('newUserCoordinates', socket.coords,socket.nickname);
         }
           
        
